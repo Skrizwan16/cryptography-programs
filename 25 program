@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <stdint.h>
+
+uint64_t gcd(uint64_t a, uint64_t b) {
+    if (b == 0) {
+        return a;
+    } else {
+        return gcd(b, a % b);
+    }
+}
+
+void findPrivateKey(uint64_t n, uint64_t e, uint64_t commonFactor) {
+  
+    uint64_t q = n / commonFactor;
+
+    uint64_t phi = (commonFactor - 1) * (q - 1);
+
+    uint64_t d;
+
+    for (d = 2; d < phi; d++) {
+        if ((e * d) % phi == 1) {
+            break;
+        }
+    }
+
+    printf("Recovered private key:\n");
+    printf("p: %llu\n", commonFactor);
+    printf("q: %llu\n", q);
+    printf("d: %llu\n", d);
+}
+
+int main() {
+    uint64_t n = 589;  
+    uint64_t e = 17;  
+
+   
+    uint64_t commonFactor = 19;  
+
+    if (n % commonFactor == 0) {
+        findPrivateKey(n, e, commonFactor);
+    } else {
+        printf("The common factor is not a factor of n.\n");
+    }
+
+    return 0;
+}
+
